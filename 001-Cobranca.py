@@ -125,23 +125,23 @@ y_pred_test_RNA_P  = RNA.predict_proba(X_test)
 #----------------------------------------------------------------------
 # Conjunto de treinamento
 df_train = pd.DataFrame(y_pred_train_DT, columns=['CLASSIF_DT'])
-df_train['CLASSIF_RL'] = [1 if x > 0.6 else 0 for x in y_pred_train_RL]
-df_train['CLASSIF_RLog'] = [1 if x > 0.6 else 0 for x in y_pred_train_RLog[:,1]]
+#df_train['CLASSIF_RL'] = [1 if x > 0.6 else 0 for x in y_pred_train_RL]
+#df_train['CLASSIF_RLog'] = [1 if x > 0.6 else 0 for x in y_pred_train_RLog[:,1]]
 df_train['CLASSIF_RNA'] = y_pred_train_RNA
-df_train['REGRESSION_DT'] = [x for x in y_pred_train_DT_C[:,1]] 
-df_train['REGRESSION_RL'] = y_pred_train_RL
-df_train['REGRESSION_RLog'] = [x for x in y_pred_train_RLog[:,1]]
+#df_train['REGRESSION_DT'] = [x for x in y_pred_train_DT_C[:,1]] 
+#df_train['REGRESSION_RL'] = y_pred_train_RL
+#df_train['REGRESSION_RLog'] = [x for x in y_pred_train_RLog[:,1]]
 df_train['REGRESSION_RNA'] = [x for x in y_pred_train_RNA_P[:,1]]
 df_train['TARGET'] = [x for x in y_train]
 df_train['TRN_TST'] = 'TRAIN'
 # Conjunto de test
 df_test = pd.DataFrame(y_pred_test_DT, columns=['CLASSIF_DT'])
-df_test['CLASSIF_RL'] = [1 if x > 0.6 else 0 for x in y_pred_test_RL]
-df_test['CLASSIF_RLog'] = [1 if x > 0.6 else 0 for x in y_pred_test_RLog[:,1]]
+#df_test['CLASSIF_RL'] = [1 if x > 0.6 else 0 for x in y_pred_test_RL]
+#df_test['CLASSIF_RLog'] = [1 if x > 0.6 else 0 for x in y_pred_test_RLog[:,1]]
 df_test['CLASSIF_RNA'] = y_pred_test_RNA
-df_test['REGRESSION_DT'] = [x for x in y_pred_test_DT_C[:,1]]  
-df_test['REGRESSION_RL'] = y_pred_test_RL
-df_test['REGRESSION_RLog'] = [x for x in y_pred_test_RLog[:,1]]
+#df_test['REGRESSION_DT'] = [x for x in y_pred_test_DT_C[:,1]]  
+#df_test['REGRESSION_RL'] = y_pred_test_RL
+#df_test['REGRESSION_RLog'] = [x for x in y_pred_test_RLog[:,1]]
 df_test['REGRESSION_RNA'] = [x for x in y_pred_test_RNA_P[:,1]]
 df_test['TARGET'] = [x for x in y_test]
 df_test['TRN_TST'] = 'TEST' 
@@ -151,7 +151,7 @@ df_total = pd.concat([df_test, df_train])
 """Verificando quem tem o menor MSE"""
 
 ##-----------------------------------------------------------------
-## Cálculo dos erros da classificação e MSE (Mean Squared Error) RNA
+## Cálculo dos erros da classificação e MSE (Mean Squared Error) Rede Neural
 ##-----------------------------------------------------------------
 Erro_RNA_Classificacao = np.mean(np.absolute(df_test['CLASSIF_RNA'] - df_test['TARGET']))
 Erro_RNA_MSE = np.mean((df_test['REGRESSION_RNA'] - df_test['TARGET']) ** 2) 
@@ -161,25 +161,53 @@ print('Rede Neural - Erro de Classificação:', round(Erro_RNA_Classificacao, 4)
 print('Rede Neural - MSE:',round(Erro_RNA_MSE, 4))
 print('----------------------------------------------')
 ##-----------------------------------------------------------------
-## Cálculo dos erros da classificação e MSE (Mean Squared Error) RNA
+## Cálculo dos erros da classificação e MSE (Mean Squared Error) Regressão Logistica
 ##-----------------------------------------------------------------
-Erro_RLog_Classificacao = np.mean(np.absolute(df_test['CLASSIF_RLog'] - df_test['TARGET']))
-Erro_RLog_MSE = np.mean((df_test['REGRESSION_RLog'] - df_test['TARGET']) ** 2) 
+#Erro_RLog_Classificacao = np.mean(np.absolute(df_test['CLASSIF_RLog'] - df_test['TARGET']))
+#Erro_RLog_MSE = np.mean((df_test['REGRESSION_RLog'] - df_test['TARGET']) ** 2) 
+#print()
+#print('---------------------------------------------')
+#print('Regressão Logistica - Erro de Classificação:',round(Erro_RLog_Classificacao, 4))
+#print('Regressão Logistica - MSE:',round(Erro_RLog_MSE, 4))
+#print('----------------------------------------------')
+##-----------------------------------------------------------------
+## Cálculo dos erros da classificação e MSE (Mean Squared Error) Regressão Linear
+##-----------------------------------------------------------------
+#Erro_RL_Classificacao = np.mean(np.absolute(df_test['CLASSIF_RL'] - df_test['TARGET']))
+#Erro_RL_MSE = np.mean((df_test['REGRESSION_RL'] - df_test['TARGET']) ** 2) 
+#print()
+#print('---------------------------------------------')
+#print('Regressão Linear - Erro de Classificação:', round(Erro_RL_Classificacao, 4))
+#print('Regressão Linear - MSE:',round(Erro_RL_MSE, 4))
+#print('----------------------------------------------')
+
+df_total
+
+# Verificando a acuracia dos algoritmos
+
+#Improtando as bibliotecas necessarias
+from sklearn.metrics import confusion_matrix
+
+#print('Matrix de confusão da Regressão Linear')
+#print('-----------------------------------')
+#print( confusion_matrix(df_test['TARGET'], df_test['CLASSIF_RL']))
+#print()
+#print()
+#print('Matrix de confusão da Regressão Logística')
+#print('-----------------------------------')
+#print(confusion_matrix(df_test['TARGET'], df_test['CLASSIF_RLog']))
+#print()
+#print()
+#print('Matrix de confusão da Árvore de Decisão')
+#print('-----------------------------------')
+#print(confusion_matrix(df_test['TARGET'], df_test['CLASSIF_DT']))
 print()
-print('---------------------------------------------')
-print('Rede Neural - Erro de Classificação:',round(Erro_RLog_Classificacao, 4))
-print('Rede Neural - MSE:',round(Erro_RLog_MSE, 4))
-print('----------------------------------------------')
-##-----------------------------------------------------------------
-## Cálculo dos erros da classificação e MSE (Mean Squared Error) RNA
-##-----------------------------------------------------------------
-Erro_RL_Classificacao = np.mean(np.absolute(df_test['CLASSIF_RL'] - df_test['TARGET']))
-Erro_RL_MSE = np.mean((df_test['REGRESSION_RL'] - df_test['TARGET']) ** 2) 
 print()
-print('---------------------------------------------')
-print('Rede Neural - Erro de Classificação:', round(Erro_RL_Classificacao, 4))
-print('Rede Neural - MSE:',round(Erro_RL_MSE, 4))
-print('----------------------------------------------')
+print('Matrix de confusão da Rede Neural')
+print('-----------------------------------')
+print(confusion_matrix(df_test['TARGET'], df_test['CLASSIF_RNA']))
+
+df_total
 
 """Exportando a analise"""
 
